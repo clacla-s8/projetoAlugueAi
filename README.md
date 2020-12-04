@@ -1,18 +1,20 @@
-# Turma On9 (Accenture) - Projeto Final
+# Alugue Aí
 
-Eis que se finda nosso curso, e agora queremos demonstrar nosso aprendizado em projeto prático.
+Projeto referente a finalização do curso de Back-end da Reprograma
 
-## Primeira Entrega - 05/12
+### Sobre o que é o projeto ?
 
-* Descritivo do projeto
-* 30% da codificação
+Conectar pessoas que possuem objetos ociosos a pessoas que precisam momentaneamente deste mesmo objeto. A ideia é aproveitar objetos que não estão em uso por um período de tempo, gerando uma renda extra ao proprietário e prevenindo que o locador faça uma compra de momento, assim economizando.
 
-É importante que o projeto esteja numa pasta e não solto na raiz da branch. Além disso, sigam a seguinte estrutura para o nome:
-_nome-sobrenome-nome-do-projeto_
+### O que é necessário para fazer funcionar ?
 
-## Segunda Entrega - 12/12
+**Instalações:**
 
-* 100% da codificação
-* Link do projeto publicado (o link da lista compartilhada será divulgado na semana 18)
+* Node.js
 
-## Apresentação do projeto - 13/12
+**Iniciando:**
+
+Baixar as dependências na raiz do projeto com o comando `npm install`
+
+Depois de ter instalado as dependências, usa o comando `npm start` para rodar o servidor e iniciar a aplicação.
+
