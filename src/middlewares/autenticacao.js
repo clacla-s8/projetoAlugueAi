@@ -1,4 +1,4 @@
-const jwt = requite('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const autenticacaoConfig = require('../config/autenticacao');
 const { promissify } = require('util');
 
@@ -11,7 +11,7 @@ module.exports = async(req, res, next) => {
 
     try {
         const decoded = await promissify(jwt.verify)(token, autenticacaoConfig.secret);
-        req.clienteId = decoded.id;
+        req.anuncianteId = decoded.id;
         return next();
     } catch (error) {
         return res.status(401).json({ error: 'Token invalid' });

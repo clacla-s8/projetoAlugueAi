@@ -1,6 +1,7 @@
 const { req, res } = require('express');
 const mongoose = require('mongoose');
 const Objeto = require('../model/Objeto');
+const Anunciante = require('../model/Anunciante');
 
 const obterTodos = async(req, res) => {
     Objeto.find()
@@ -33,22 +34,29 @@ const obterPorNome = async(req, res) => {
 
 
 const salvarObjeto = async(req, res, next) => {
+    anunciante = req.params;
+    id = anunciante.id;
     const { nome, preco, foto } = req.body;
-
     try {
-        const novoObjeto = new Objeto({
+        const novoObjeto = await Objeto.create({
             nome,
             preco,
             foto,
-            anuncianteId: novoObjeto.anuncianteId
+            anuncianteId: id
 
         });
 
-        novoObjeto.save()
+
+        await novoObjeto.save()
             .then((objeto) => {
                 res.status(201).json(objeto);
             })
             .catch(err => next(err));
+
+        const anunciantePorId = await Anunciante.findById(id)
+        anunciantePorId.objetos.push(novoObjeto)
+        await anunciantePorId.save()
+
     } catch (e) {
         return res.status(400).json(e)
     }

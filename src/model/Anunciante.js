@@ -7,6 +7,7 @@ const anuncianteSchema = new Schema({
     endereco: { type: String, required: true },
     email: { type: String, unique: true, required: true },
     senha: { type: String, required: true },
+    objetos: [{ type: Schema.Types.ObjectId, ref: 'Objeto', required: true }]
 }, { timestamps: true });
 
 const Anunciante = mongoose.model('Anunciante', anuncianteSchema);

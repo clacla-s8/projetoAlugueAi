@@ -10,7 +10,7 @@ mongoose.connect('mongodb://localhost/AlugaAi', {
 const clientes = require('./routes/clienteRoutes');
 const anunciantes = require('./routes/anuncianteRoutes');
 const objetos = require('./routes/objetoRoutes');
-//const sessions = require('./routes/sessionRoute');
+const sessions = require('./routes/sessaoRoute');
 
 app.use(express.json());
 
@@ -26,6 +26,6 @@ app.use(function(req, res, next) {
 app.use('/cliente', clientes);
 app.use('/anunciante', anunciantes);
 app.use('/objeto', objetos);
-//app.use('/sessions', sessions);
+app.use('/sessao', sessions);
 
 module.exports = app;
