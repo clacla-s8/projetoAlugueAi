@@ -9,11 +9,11 @@ function verificarSenha(senhaEntrada, senha) {
 
 exports.accessToken = (req, res) => {
     try {
-        const { mail, senha: senhaEntrada } = req.body;
+        const { mail, senhaEntrada } = req.body;
 
         Anunciante.findOne({ email: mail })
             .then((anunciante) => {
-                const { id, email, senha } = anunciante;
+                let { id, email, senha } = anunciante;
 
                 try {
                     verificarSenha(senhaEntrada, senha);

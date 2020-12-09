@@ -5,6 +5,18 @@ const Cliente = require('../model/Cliente');
 const bcrypt = require('bcrypt');
 const bcryptSalt = 10;
 
+const obterTodos = async(req, res) => {
+    Cliente.find()
+        .then((existeCliente) => {
+            if (existeCliente) {
+                res.status(200).json(existeCliente)
+            }
+        })
+        .catch((e) => {
+            res.status(400).json(e)
+        })
+}
+
 const salvarCliente = async(req, res, next) => {
     const { nome, telefone, endereco, email, senha } = req.body;
     const salt = bcrypt.genSaltSync(bcryptSalt);
@@ -26,7 +38,7 @@ const salvarCliente = async(req, res, next) => {
                 cliente.senha = senhaEncriptada;
                 cliente.save()
                     .then((cliente) => {
-                        res.status(201).json(cliente);
+                        res.status(201).json({ mensagem: 'Cadastro realizado com sucesso' });
                     })
                     .catch(err => next(err))
             })
@@ -39,5 +51,6 @@ const salvarCliente = async(req, res, next) => {
 }
 
 module.exports = {
+    obterTodos,
     salvarCliente,
 }

@@ -26,7 +26,7 @@ const salvarAnunciante = async(req, res, next) => {
                 anunciante.senha = senhaEncriptada;
                 anunciante.save()
                     .then((anunciante) => {
-                        res.status(201).json(anunciante);
+                        res.status(201).json({ mensagem: 'Cadastro realizado com sucesso' });
                     })
                     .catch(err => next(err))
             })
@@ -38,6 +38,19 @@ const salvarAnunciante = async(req, res, next) => {
     }
 }
 
+const obterTodos = async(req, res) => {
+    Anunciante.find()
+        .then((existeAnunciante) => {
+            if (existeAnunciante) {
+                res.status(200).json(existeAnunciante)
+            }
+        })
+        .catch((e) => {
+            res.status(400).json(e)
+        })
+}
+
 module.exports = {
+    obterTodos,
     salvarAnunciante,
 }
