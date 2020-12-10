@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/AlugueAi', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useCreateIndex: true,
 });
 
 const clientes = require('./routes/clienteRoutes');

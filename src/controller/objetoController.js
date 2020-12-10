@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Objeto = require('../model/Objeto');
 const Anunciante = require('../model/Anunciante');
 
-const obterTodos = async(req, res) => {
+const obterTodos = async(req, res, next) => {
     Objeto.find()
         .then((objetos) => {
             if (objetos == 0) {
@@ -11,12 +11,10 @@ const obterTodos = async(req, res) => {
             }
             res.status(200).json(objetos);
         })
-        .catch((err) => {
-            res.status(400).json(err);
-        })
+        .catch(err => next(err))
 }
 
-const obterPorId = async(req, res) => {
+const obterPorId = async(req, res, next) => {
     const { id } = req.params;
     Objeto.findById(id)
         .then((objeto) => {
@@ -25,12 +23,10 @@ const obterPorId = async(req, res) => {
             }
             res.status(200).json(objeto);
         })
-        .catch((err) => {
-            res.status(400).json(err);
-        })
+        .catch(err => next(err))
 }
 
-const obterPorNome = async(req, res) => {
+const obterPorNome = async(req, res, next) => {
     const { nome } = req.params;
     console.log(nome)
     Objeto.find({ nome: nome })
@@ -41,9 +37,7 @@ const obterPorNome = async(req, res) => {
             res.status(200).json(existeObjeto);
 
         })
-        .catch((err) => {
-            res.status(400).json(err);
-        });
+        .catch(err => next(err));
 
 }
 
@@ -79,7 +73,24 @@ const salvarObjeto = async(req, res, next) => {
     }
 }
 
-const deletarPorId = async(req, res) => {
+const atualizarObjeto = async(req, res, next) => {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        res.status(400).json({ message: 'id nao é valido' });
+        return;
+    }
+
+    Objeto.findByIdAndUpdate(id, req.body)
+        .then(() => {
+            res.status(200).json({ message: ` ${req.params.id} foi atualizado.` });
+        })
+        .catch(err => next(err));
+
+}
+
+
+const deletarPorId = async(req, res, next) => {
     const { id } = req.params;
     Objeto.findById(id)
         .then(async(objeto) => {
@@ -95,9 +106,7 @@ const deletarPorId = async(req, res) => {
                     res.status(400).json(err, { message: 'Não foi possivel remover' })
                 })
         })
-        .catch((e) => {
-            res.status(400).json(e)
-        })
+        .catch(err => next(err))
 }
 
 
@@ -106,5 +115,6 @@ module.exports = {
     obterPorNome,
     obterPorId,
     salvarObjeto,
+    atualizarObjeto,
     deletarPorId
 }
