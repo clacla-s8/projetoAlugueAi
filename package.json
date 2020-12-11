@@ -10,14 +10,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/clacla-s8/On9-Accenture-Projeto-Final.git"
+        "url": "git+https://github.com/clacla-s8/projetoAlugueAi.git"
     },
     "author": "Clarice Santos",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/clacla-s8/On9-Accenture-Projeto-Final/issues"
+        "url": "https://github.com/clacla-s8/projetoAlugueAi/issues"
     },
-    "homepage": "https://github.com/clacla-s8/On9-Accenture-Projeto-Final#readme",
+    "homepage": "https://github.com/clacla-s8/projetoAlugueAi#readme",
     "dependencies": {
         "bcrypt": "^5.0.0",
         "cors": "^2.8.5",
