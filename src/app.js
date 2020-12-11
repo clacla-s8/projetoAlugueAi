@@ -1,8 +1,11 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 
-mongoose.connect('mongodb://localhost/AlugueAi', {
+dotenv.config();
+
+mongoose.connect(`${process.env.DATABASE_URL}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
