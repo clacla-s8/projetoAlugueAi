@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
-const authConfig = require('../config/autenticacao');
+//const authConfig = require('../config/autenticacao');
 const bcrypt = require('bcrypt');
 const Anunciante = require('../model/Anunciante');
+const Cliente = require('../model/Cliente');
 
 
 function verificarSenha(senhaEntrada, senha) {
@@ -28,6 +29,48 @@ exports.accessTokenAnunciante = (req, res) => {
                 try {
                     return res.json({
                         anunciante: {
+                            id,
+                            email,
+                        },
+                        token: jwt.sign({ id }, `${process.env.SECRET}`, {
+                            expiresIn: `${process.env.EXPIRESIN}`,
+                        }),
+                    });
+                } catch (e) {
+                    return res.status(401).json({ error: 'erro no retorno' });
+                }
+
+            })
+            .catch((e) => {
+                return res.status(401).json({ error: 'anunciante not found' });
+            });
+
+    } catch (e) {
+        return res.status(401).json({ error: 'erro' });
+    }
+}
+
+
+exports.accessTokenCliente = (req, res) => {
+    try {
+        const { mail, senhaEntrada } = req.body;
+
+        Cliente.findOne({ email: mail })
+            .then((cliente) => {
+                let { id, email, senha } = cliente;
+
+                try {
+                    verificarSenha(senhaEntrada, senha);
+                    if (!(verificarSenha(senhaEntrada, senha))) {
+                        return res.status(401).json({ error: 'senha incorreta' });
+                    }
+                } catch (e) {
+                    return res.status(401).json({ error: 'senha does not match' });
+                }
+
+                try {
+                    return res.json({
+                        cliente: {
                             id,
                             email,
                         },
