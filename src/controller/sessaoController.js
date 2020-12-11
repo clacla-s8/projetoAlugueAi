@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-//const authConfig = require('../config/autenticacao');
 const bcrypt = require('bcrypt');
 const Anunciante = require('../model/Anunciante');
 const Cliente = require('../model/Cliente');
