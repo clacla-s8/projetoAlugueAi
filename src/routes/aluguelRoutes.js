@@ -1,6 +1,9 @@
 const express = require('express');
 const aluguelController = require('../controller/aluguelController');
 const router = express.Router();
+const authMiddlewares = require('../middlewares/autenticacao')
+
+router.use(authMiddlewares)
 
 router.get('/', aluguelController.obterAlugueis);
 

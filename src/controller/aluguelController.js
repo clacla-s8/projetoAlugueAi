@@ -13,7 +13,7 @@ const obterAlugueis = async(req, res) => {
             res.status(200).json(alugueis);
         })
         .catch((err) => {
-            res.status(400).json(err);
+            res.status(500).json(err);
         });
 
 }
@@ -63,7 +63,7 @@ const devolver = async(req, res) => {
                 })
         })
         .catch((e) => {
-            res.status(400).json(e)
+            res.status(500).json(e)
         })
 
 }

@@ -13,7 +13,7 @@ const obterTodos = async(req, res) => {
             }
         })
         .catch((e) => {
-            res.status(400).json(e)
+            res.status(500).json(e)
         })
 }
 

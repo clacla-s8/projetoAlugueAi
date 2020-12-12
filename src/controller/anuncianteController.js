@@ -16,17 +16,12 @@ const obterTodos = async(req, res) => {
             }
         })
         .catch((e) => {
-            res.status(400).json(e)
+            res.status(500).json(e)
         })
 }
 
 const atualizarAnunciante = async(req, res, next) => {
     const { id } = req.params;
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        res.status(400).json({ message: 'id nao é valido' });
-        return;
-    }
 
     Anunciante.findByIdAndUpdate(id, req.body)
         .then(() => {
@@ -66,7 +61,7 @@ const salvarAnunciante = async(req, res, next) => {
                 res.status(400).json(err)
             })
     } catch (e) {
-        return res.status(400).json(e)
+        return res.status(500).json(e)
     }
 }
 
@@ -76,19 +71,32 @@ const deletarAnunciante = async(req, res, next) => {
     Anunciante.findById(id)
         .then(async(anunciante) => {
             if ((anunciante.objetos).length > 0) {
-                if ((anunciante.objetos).includes(Aluguel.objetoId)) {
-                    return res.status(400).json({ message: 'Espere a devolução dos objetos alugados para deletar conta' })
-                }
+                anunciante.objetos.forEach(objeto => {
+                    Objeto.findById(objeto)
+                        .then(async(obj) => {
+                            if (obj.isAlugado == true) {
+                                return res.status(400).json({ message: 'Não é possivel remover conta com objetos alugados' })
+                            }
+                            await Objeto.findByIdAndRemove(obj)
+                            await Anunciante.findByIdAndRemove(id)
+                            res.status(200).json({ message: 'Conta deletada !' })
+                        })
+                        .catch((err) => {
+                            res.status(400).json(err)
+                        })
+                });
+            } else {
+                Anunciante.findByIdAndRemove(id)
+                    .then(() => {
+                        res.status(200).json({ message: 'Conta deletada !' })
+                    })
+                    .catch((err) => {
+                        res.status(400).json(err, { message: 'Não foi possivel deletar conta' })
+                    })
             }
-            Anunciante.findByIdAndRemove(id)
-                .then(() => {
-                    res.status(200).json({ message: 'Conta deletada !' })
-                })
-                .catch((err) => {
-                    res.status(400).json(err, { message: 'Não foi possivel deletar conta' })
-                })
-        })
 
+        })
+        .catch(err => next(err))
 
 }
 
