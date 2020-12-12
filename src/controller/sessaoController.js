@@ -41,14 +41,13 @@ exports.accessTokenAnunciante = (req, res) => {
 
             })
             .catch((e) => {
-                return res.status(401).json({ error: 'anunciante not found' });
+                return res.status(401).json({ error: 'anunciante não encontrado' });
             });
 
     } catch (e) {
         return res.status(401).json({ error: 'erro' });
     }
 }
-
 
 exports.accessTokenCliente = (req, res) => {
     try {
@@ -83,7 +82,7 @@ exports.accessTokenCliente = (req, res) => {
 
             })
             .catch((e) => {
-                return res.status(401).json({ error: 'anunciante not found' });
+                return res.status(401).json({ error: 'cliente nao encontrado' });
             });
 
     } catch (e) {

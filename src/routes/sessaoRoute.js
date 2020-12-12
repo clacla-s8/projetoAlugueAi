@@ -1,6 +1,7 @@
-const express = require("express")
-const router = express.Router()
-const controller = require("../controller/sessaoController")
+const express = require('express');
+const router = express.Router();
+const controller = require('../controller/sessaoController');
+
 
 
 router.post('/anunciante', controller.accessTokenAnunciante);

@@ -6,4 +6,8 @@ router.get('/', clienteController.obterTodos);
 
 router.post('/cadastrar', clienteController.salvarCliente);
 
+router.put('/:id', clienteController.atualizarCliente);
+
+router.delete('/:id', clienteController.deletarCliente);
+
 module.exports = router;

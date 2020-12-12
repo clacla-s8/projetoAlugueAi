@@ -19,10 +19,10 @@ const obterAlugueis = async(req, res) => {
 }
 
 const alugar = async(req, res) => {
-    let { id } = req.body;
+    let { idObjeto } = req.body;
     let { IdCliente } = req.body;
 
-    Objeto.findById(id).then(objetoEncontrado => {
+    Objeto.findById(idObjeto).then(objetoEncontrado => {
         if (objetoEncontrado.isAlugado == true) {
             return res.status(400).json({ message: 'Objeto ja esta alugado' })
         }
