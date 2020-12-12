@@ -14,18 +14,6 @@ const obterTodos = async(req, res, next) => {
         .catch(err => next(err))
 }
 
-const obterPorId = async(req, res, next) => {
-    const { id } = req.params;
-    Objeto.findById(id)
-        .then((objeto) => {
-            if (objeto == 0) {
-                res.status(404).json({ message: 'Não há objetos cadastrados' });
-            }
-            res.status(200).json(objeto);
-        })
-        .catch(err => next(err))
-}
-
 const obterPorNome = async(req, res, next) => {
     const { nome } = req.params;
     console.log(nome)
@@ -76,17 +64,19 @@ const salvarObjeto = async(req, res, next) => {
 const atualizarObjeto = async(req, res, next) => {
     const { id } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        res.status(400).json({ message: 'id nao é valido' });
-        return;
-    }
+    Objeto.findById(id)
+        .then((objeto) => {
+            if (objeto.isAlugado == true) {
+                return res.status(400).json({ message: 'Não é possivel atualizar objetos alugados' })
+            }
 
-    Objeto.findByIdAndUpdate(id, req.body)
-        .then(() => {
-            res.status(200).json({ message: ` ${req.params.id} foi atualizado.` });
+            Objeto.findByIdAndUpdate(id, req.body)
+                .then(() => {
+                    res.status(200).json({ message: ' O objeto foi atualizado.' });
+                })
+                .catch(err => next(err));
         })
-        .catch(err => next(err));
-
+        .catch(e => res.status(500).json(e));
 }
 
 
@@ -113,7 +103,6 @@ const deletarPorId = async(req, res, next) => {
 module.exports = {
     obterTodos,
     obterPorNome,
-    obterPorId,
     salvarObjeto,
     atualizarObjeto,
     deletarPorId

@@ -1,10 +1,13 @@
 const express = require('express');
 const anuncianteController = require('../controller/anuncianteController');
 const router = express.Router();
-
-router.get('/', anuncianteController.obterTodos);
+const authMiddleware = require('../middlewares/autenticacao');
 
 router.post('/cadastrar', anuncianteController.salvarAnunciante);
+
+router.use(authMiddleware);
+
+router.get('/', anuncianteController.obterTodos);
 
 router.put('/:id', anuncianteController.atualizarAnunciante);
 

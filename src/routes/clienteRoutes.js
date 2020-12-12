@@ -1,10 +1,13 @@
 const express = require('express');
 const clienteController = require('../controller/clienteController');
 const router = express.Router();
-
-router.get('/', clienteController.obterTodos);
+const authMiddleware = require('../middlewares/autenticacao');
 
 router.post('/cadastrar', clienteController.salvarCliente);
+
+router.use(authMiddleware);
+
+router.get('/', clienteController.obterTodos);
 
 router.put('/:id', clienteController.atualizarCliente);
 
