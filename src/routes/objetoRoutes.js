@@ -1,11 +1,9 @@
 const express = require('express');
 const objetoController = require('../controller/objetoController');
 const router = express.Router();
-const authMiddleware = require('../middlewares/autenticacao');
 
-router.use(authMiddleware);
 
-router.post('/cadastrar/:id', objetoController.salvarObjeto);
+router.post('/cadastrar', objetoController.salvarObjeto);
 router.delete('/:id', objetoController.deletarPorId);
 router.put('/atualizar/:id', objetoController.atualizarObjeto);
 

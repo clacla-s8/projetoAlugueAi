@@ -1,6 +1,6 @@
 const { req, res } = require('express');
 const mongoose = require('mongoose');
-const Cliente = require('../model/Cliente');
+const Usuario = require('../model/Usuario');
 const Objeto = require('../model/Objeto');
 const Aluguel = require('../model/Aluguel');
 
@@ -8,7 +8,7 @@ const obterAlugueis = async(req, res) => {
     Aluguel.find()
         .then((alugueis) => {
             if (alugueis == 0) {
-                res.status(404).json({ message: 'Não há aluguel' });
+                res.status(404).json({ mensagem: 'Não há aluguel' });
             }
             res.status(200).json(alugueis);
         })
@@ -20,24 +20,24 @@ const obterAlugueis = async(req, res) => {
 
 const alugar = async(req, res) => {
     let { idObjeto } = req.body;
-    let { IdCliente } = req.body;
+    let { IdUsuario } = req.body;
 
     Objeto.findById(idObjeto).then(objetoEncontrado => {
         if (objetoEncontrado.isAlugado == true) {
-            return res.status(400).json({ message: 'Objeto ja esta alugado' })
+            return res.status(400).json({ mensagem: 'Objeto ja esta alugado' })
         }
-        Cliente.findById(IdCliente).then(cliente => {
-            cliente.objetosAlugados.push(objetoEncontrado._id)
-            cliente.save().then(() => {
+        Usuario.findById(IdUsuario).then(usuario => {
+            usuario.objetosAlugados.push(objetoEncontrado._id)
+            usuario.save().then(() => {
                 objetoEncontrado.isAlugado = true;
                 objetoEncontrado.save().then(() => {
                     objetoAlugado = {
                         objetoId: objetoEncontrado._id,
-                        clienteId: IdCliente,
+                        usuarioId: IdUsuario,
                     }
 
                     Aluguel.create(objetoAlugado).then(() => {
-                        res.status(200).json({ message: 'Sucesso' })
+                        res.status(200).json({ mensagem: 'Sucesso' })
                     })
 
                 })
@@ -52,14 +52,14 @@ const devolver = async(req, res) => {
         .then(async(aluguel) => {
             await Objeto.findOneAndUpdate({ _id: aluguel.objetoId }, { $set: { isAlugado: false } })
 
-            await Cliente.findOneAndUpdate({ _id: aluguel.clienteId }, { $pull: { objetosAlugados: aluguel.objetoId } })
+            await Usuario.findOneAndUpdate({ _id: aluguel.usuarioId }, { $pull: { objetosAlugados: aluguel.objetoId } })
 
             Aluguel.findByIdAndRemove(id)
                 .then(() => {
-                    res.status(200).json({ message: 'Devolução realizada' })
+                    res.status(200).json({ mensagem: 'Devolução realizada' })
                 })
                 .catch((err) => {
-                    res.status(400).json(err, { message: 'Não foi possivel realizar a devolução' })
+                    res.status(400).json(err, { mensagem: 'Não foi possivel realizar a devolução' })
                 })
         })
         .catch((e) => {
