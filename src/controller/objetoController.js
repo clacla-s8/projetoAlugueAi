@@ -2,6 +2,34 @@ const { req, res } = require('express');
 const mongoose = require('mongoose');
 const Objeto = require('../model/Objeto');
 const Usuario = require('../model/Usuario');
+const multer = require('multer');
+const path = require('path');
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "./uploads");
+    },
+    filename: function(req, file, cb) {
+        cb(null, new Date().toISOString() + file.originalname)
+    }
+});
+/* const fileFilter = (req, file, cb) => {
+    if (file.mimetype == "image/jpeg" || file.
+        "image/png") {
+        cb(null, true);
+    } else {
+        cb(null, false);
+    }
+}; */
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 6,
+    }
+    //fileFilter: fileFilter,
+
+});
+
 
 const obterTodos = async(req, res, next) => {
     Objeto.find()
@@ -33,12 +61,12 @@ const obterPorNome = async(req, res, next) => {
 const salvarObjeto = async(req, res, next) => {
     //usuario = req.params;
     //id = usuario.id;
-    const { nome, preco, foto, categoria } = req.body;
+    const { nome, preco, categoria } = req.body;
     try {
         const novoObjeto = await Objeto.create({
             nome,
             preco,
-            foto,
+            foto: req.file.path,
             categoria
             //UsuarioId: req.userId
 
@@ -47,7 +75,7 @@ const salvarObjeto = async(req, res, next) => {
 
         await novoObjeto.save()
             .then((objeto) => {
-                res.status(201).json(objeto);
+                res.status(201).json({ success: true, msg: 'cadastro realizado !' });
             })
             .catch(err => next(err));
 
