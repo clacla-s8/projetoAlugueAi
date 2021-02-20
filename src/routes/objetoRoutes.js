@@ -79,7 +79,7 @@ router.delete('/:id', objetoController.deletarPorId);
 router.put('/atualizar/:id', objetoController.atualizarObjeto);
 
 router.get('/', objetoController.obterTodos);
-router.get('/:nome', objetoController.obterPorNome);
+router.get('/filtrar', objetoController.obterPorNome);
 
 
 module.exports = router;

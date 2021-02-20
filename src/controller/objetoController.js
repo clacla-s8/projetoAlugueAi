@@ -43,9 +43,9 @@ const obterTodos = async(req, res, next) => {
 }
 
 const obterPorNome = async(req, res, next) => {
-    const { nome } = req.params;
-    console.log(nome)
-    Objeto.find({ nome: nome })
+    const querynome = req.query.nome;
+
+    Objeto.find({ nome: querynome })
         .then(async existeObjeto => {
             if (existeObjeto == 0) {
                 res.status(404).json({ mensagem: 'Este objeto não esta cadastrado' });
