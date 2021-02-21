@@ -64,7 +64,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage })
 
 
-router.post('/cadastrar', upload.single('myFile'), async(req, res, next) => {
+router.post('/cadastrar', upload.single('img'), async(req, res, next) => {
     const { nome, preco, categoria } = req.body;
     const file = req.file
     if (!file) {
