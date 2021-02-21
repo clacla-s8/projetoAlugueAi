@@ -8,7 +8,7 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 
-const storage = multer.diskStorage({
+/*const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, "./uploads");
     },
@@ -32,7 +32,7 @@ const upload = multer({
     fileFilter: fileFilter
 
 
-});
+}); */
 
 /* router.route("/cadastrar/image").patch(upload.single("img"), async(req, res) => {
     await Objeto.findOneAndUpdate({ nome: req.nome }, {
@@ -52,7 +52,7 @@ const upload = multer({
     );
 }); */
 
-/* var storage = multer.diskStorage({
+var storage = multer.diskStorage({
     destination: function(req, file, cb) {
         cb(null, './uploads')
     },
@@ -61,7 +61,7 @@ const upload = multer({
     }
 })
 
-var upload = multer({ storage: storage }) */
+var upload = multer({ storage: storage })
 
 
 router.post('/cadastrar', upload.single('img'), async(req, res, next) => {
