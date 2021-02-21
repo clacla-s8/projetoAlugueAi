@@ -8,7 +8,7 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 
-const storage = multer.diskStorage({
+/* const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, "./uploads");
     },
@@ -50,16 +50,33 @@ router.route("/cadastrar/image").patch(upload.single("img"), async(req, res) => 
 
         }
     );
-});
+}); */
+
+var storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './uploads')
+    },
+    filename: function(req, file, cb) {
+        cb(null, new Date().toISOString() + file.originalname)
+    }
+})
+
+var upload = multer({ storage: storage })
 
 
-router.route('/cadastrar').post(async(req, res, next) => {
-    const { nome, preco, img, categoria } = req.body;
+router.post('/cadastrar', upload.single('myFile'), async(req, res, next) => {
+    const { nome, preco, categoria } = req.body;
+    const file = req.file
+    if (!file) {
+        const error = new Error('Please upload a file')
+        error.httpStatusCode = 400
+        return next("hey error")
+    }
     try {
         const novoObjeto = await Objeto.create({
             nome,
             preco,
-            img,
+            img: file.path,
             categoria
 
         });
@@ -80,6 +97,7 @@ router.put('/atualizar/:id', objetoController.atualizarObjeto);
 
 router.get('/', objetoController.obterTodos);
 router.get('/filtrar', objetoController.obterPorNome);
+
 
 
 module.exports = router;

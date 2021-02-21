@@ -42,6 +42,7 @@ const obterTodos = async(req, res, next) => {
         .catch(err => next(err))
 }
 
+
 const obterPorNome = async(req, res, next) => {
     const querynome = req.query.nome;
 
@@ -134,5 +135,6 @@ module.exports = {
     obterPorNome,
     salvarObjeto,
     atualizarObjeto,
-    deletarPorId
+    deletarPorId,
+
 }
