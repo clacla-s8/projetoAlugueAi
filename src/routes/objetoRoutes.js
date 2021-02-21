@@ -8,7 +8,7 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 
-/* const storage = multer.diskStorage({
+const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, "./uploads");
     },
@@ -34,7 +34,7 @@ const upload = multer({
 
 });
 
-router.route("/cadastrar/image").patch(upload.single("img"), async(req, res) => {
+/* router.route("/cadastrar/image").patch(upload.single("img"), async(req, res) => {
     await Objeto.findOneAndUpdate({ nome: req.nome }, {
             $set: {
                 img: req.file.path,
@@ -52,7 +52,7 @@ router.route("/cadastrar/image").patch(upload.single("img"), async(req, res) => 
     );
 }); */
 
-var storage = multer.diskStorage({
+/* var storage = multer.diskStorage({
     destination: function(req, file, cb) {
         cb(null, './uploads')
     },
@@ -61,10 +61,10 @@ var storage = multer.diskStorage({
     }
 })
 
-var upload = multer({ storage: storage })
+var upload = multer({ storage: storage }) */
 
 
-router.post('/cadastrar', upload.single('img'), async(req, res, next) => {
+router.route('/cadastrar').post(upload.single('myfile'), async(req, res, next) => {
     const { nome, preco, categoria } = req.body;
     const file = req.file
     if (!file) {
@@ -83,7 +83,7 @@ router.post('/cadastrar', upload.single('img'), async(req, res, next) => {
 
         await novoObjeto.save()
             .then((objeto) => {
-                res.status(201).json({ success: true, msg: 'cadastro realizado !' });
+                res.status(201).json({ success: true, msg: 'cadastro realizado  !' });
             })
             .catch(err => next(err));
 
