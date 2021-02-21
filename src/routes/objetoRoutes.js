@@ -64,7 +64,7 @@ const upload = multer({
 var upload = multer({ storage: storage }) */
 
 
-router.route('/cadastrar').post(upload.single('myfile'), async(req, res, next) => {
+router.post('/cadastrar', upload.single('img'), async(req, res, next) => {
     const { nome, preco, categoria } = req.body;
     const file = req.file
     if (!file) {
