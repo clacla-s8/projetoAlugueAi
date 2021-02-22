@@ -52,25 +52,16 @@ router.route("/cadastrar/image").patch(upload.single("img"), async(req, res) => 
     );
 }); */
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "./uploads");
-    },
-    filename: function(req, file, cb) {
-        cb(null, file.originalname)
-    }
-});
-
-/* const storage = multer.diskStorage({
-    destination: function(req, file, cb) => {
-        cb(null, "./uploads")
+var storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './uploads')
     },
     filename: function(req, file, cb) {
         cb(null, new Date().toISOString() + file.originalname)
     }
-}) */
+})
 
-const upload = multer({ storage: storage })
+var upload = multer({ storage: storage })
 
 
 router.post('/cadastrar', upload.single("img"), async(req, res, next) => {
