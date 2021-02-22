@@ -20,9 +20,9 @@ const alugueis = require('./routes/aluguelRoutes');
 const sessions = require('./routes/sessaoRoute');
 const index = require('./routes/index');
 
-//app.use('/uploads', express.static(__dirname + '/uploads'));
+app.use('/uploads', express.static(__dirname + '/uploads'));
 
-app.use("/uploads", express.static("uploads"));
+//app.use("/uploads", express.static("uploads"));
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
