@@ -8,7 +8,7 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 
-/*const storage = multer.diskStorage({
+/* const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, "./uploads");
     },
@@ -32,9 +32,9 @@ const upload = multer({
     fileFilter: fileFilter
 
 
-}); */
+});
 
-/* router.route("/cadastrar/image").patch(upload.single("img"), async(req, res) => {
+router.route("/cadastrar/image").patch(upload.single("img"), async(req, res) => {
     await Objeto.findOneAndUpdate({ nome: req.nome }, {
             $set: {
                 img: req.file.path,
@@ -52,19 +52,28 @@ const upload = multer({
     );
 }); */
 
-var storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, '/uploads')
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "./uploads");
+    },
+    filename: function(req, file, cb) {
+        cb(null, file.originalname)
+    }
+});
+
+/* const storage = multer.diskStorage({
+    destination: function(req, file, cb) => {
+        cb(null, "./uploads")
     },
     filename: function(req, file, cb) {
         cb(null, new Date().toISOString() + file.originalname)
     }
-})
+}) */
 
-var upload = multer({ storage: storage })
+const upload = multer({ storage: storage })
 
 
-router.post('/cadastrar', upload.single('img'), async(req, res, next) => {
+router.post('/cadastrar', upload.single("img"), async(req, res, next) => {
     const { nome, preco, categoria } = req.body;
     const file = req.file
     if (!file) {
